@@ -72,4 +72,6 @@ scripts: "postinstall": "./node_modules/.bin/rn-nodeify --install --hack"
 
 ## EAS Build
 
-This project has now been successfully built on the Expo EAS build service. Implication is that this could build to production which validates the code. Repo includes eas.json config file.
+This project has now been successfully built on the Expo EAS build service. Implication is that this could build to production which validates the code. Obviously, it needs to fleshed out to be more robust. Repo includes eas.json config file.
+
+Android sdk location: /Users/blackbird/Library/Android/sdk
