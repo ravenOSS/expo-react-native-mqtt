@@ -1,32 +1,46 @@
 {
-	"name": "expo-react-native-mqtt",
-	"version": "0.0.1",
-	"main": "node_modules/expo/AppEntry.js",
-	"scripts": {
-		"start": "expo start",
-		"android": "expo start --android",
-		"ios": "expo start --ios",
-		"postinstall": "rn-nodeify --install url,process,events,util --hack"
-	},
-	"dependencies": {
-		"events": "^1.1.1",
-		"expo": "^44.0.6",
-		"expo-dev-client": "~0.8.4",
-		"expo-status-bar": "~1.2.0",
-		"mqtt": "^4.3.6",
-		"process": "^0.11.10",
-		"react": "17.0.1",
-		"react-dom": "17.0.1",
-		"react-native": "^0.67.4",
-		"react-native-tcp-socket": "^5.6.0",
-		"url": "^0.10.3",
-		"util": "^0.10.4"
-	},
-	"react-native": {
-		"net": "react-native-tcp-socket"
-	},
-	"devDependencies": {
-		"@babel/core": "^7.12.9",
-		"rn-nodeify": "^10.3.0"
-	}
+  "name": "expo-react-native-mqtt",
+  "version": "0.0.1",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "postinstall": "rn-nodeify --install url,process,events,util,stream --hack"
+  },
+  "dependencies": {
+    "events": "^1.1.1",
+    "expo": "^44.0.6",
+    "expo-dev-client": "~0.8.4",
+    "expo-status-bar": "~1.2.0",
+    "mqtt": "^4.3.6",
+    "process": "^0.11.10",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-native": "^0.64.3",
+    "readable-stream": "^1.0.33",
+    "stream-browserify": "^1.0.0",
+    "url": "^0.10.3",
+    "util": "^0.10.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "rn-nodeify": "^10.3.0"
+  },
+  "react-native": {
+    "_stream_transform": "readable-stream/transform",
+    "_stream_readable": "readable-stream/readable",
+    "_stream_writable": "readable-stream/writable",
+    "_stream_duplex": "readable-stream/duplex",
+    "_stream_passthrough": "readable-stream/passthrough",
+    "stream": "stream-browserify"
+  },
+  "browser": {
+    "_stream_transform": "readable-stream/transform",
+    "_stream_readable": "readable-stream/readable",
+    "_stream_writable": "readable-stream/writable",
+    "_stream_duplex": "readable-stream/duplex",
+    "_stream_passthrough": "readable-stream/passthrough",
+    "stream": "stream-browserify"
+  }
 }

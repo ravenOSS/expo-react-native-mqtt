@@ -1,5 +1,4 @@
 import './shim.js'
-const net = require('react-native-tcp-socket')
 import { StatusBar } from 'expo-status-bar'
 import { useEffect, useState } from 'react'
 
@@ -13,10 +12,8 @@ const clientId = 'mqtt-rn'
 export default function App() {
 	const [message, setMessage] = useState([])
 
-	useEffect(() => createClient(), [])
-
-	function createClient() {
-		const mqttClient = mqtt.connect(mqtthost, clientId)
+	useEffect(() => {
+		const mqttClient = mqtt.connect(wshost, clientId)
 
 		mqttClient.on('connect', () => {
 			mqttClient.subscribe('raven')
@@ -26,7 +23,14 @@ export default function App() {
 			console.log(`${topic}: ${message.toString()} `)
 			setMessage(message.toString())
 		})
-	}
+
+		return () => {
+			mqttClient.on('end', function () {
+				mqttClient.unsubscribe('raven')
+				console.log('disconnected')
+			})
+		}
+	}, [])
 
 	return (
 		<View style={styles.container}>
