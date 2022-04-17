@@ -3,60 +3,106 @@ import { StatusBar } from 'expo-status-bar'
 import { useEffect, useState } from 'react'
 
 import { StyleSheet, Text, View } from 'react-native'
-const mqtt = require('mqtt')
 
-const wshost = 'ws://192.168.0.120:8880'
-const mqtthost = 'mqtt://192.168.0.120:1883'
-const clientId = 'mqtt-rn'
+import * as mqtt from 'mqtt'
 
 export default function App() {
-	const [message, setMessage] = useState([])
+  // const [client, setClient] = useState(null)
+  const [connectStatus, setConnectStatus] = useState(false)
+  const [messages, setMessages] = useState([])
 
-	useEffect(() => {
-		const mqttClient = mqtt.connect(wshost, clientId)
+  const wshost = 'ws://192.168.0.120:8880'
+  const mqtthost = 'mqtt://192.168.0.120:1883'
+  const clientId = 'mqtt-rn'
 
-		mqttClient.on('connect', () => {
-			mqttClient.subscribe('raven')
-		})
+  const options = {
+    keepalive: 60,
+    clientId: clientId,
+    protocolId: 'MQTT',
+    protocolVersion: 4,
+    reconnectPeriod: 1000 * 3,
+    connectTimeout: 1000 * 30,
+    clean: false,
+    retain: false,
+    resubscribe: true,
+    qos: 1,
+    will: {
+      topic: 'WilllMsg',
+      payload: 'Subscriber Connection Closed abnormally..!',
+      qos: 1,
+      retain: false,
+    },
+  }
 
-		mqttClient.on('message', function (topic, message) {
-			console.log(`${topic}: ${message.toString()} `)
-			setMessage(message.toString())
-		})
+  //! HandleConnect - calls defined function
+  //! HandleSubscribe
+  //! HandlePublish
+  //! HandleDisconnect
 
-		return () => {
-			mqttClient.on('end', function () {
-				mqttClient.unsubscribe('raven')
-				console.log('disconnected')
-			})
-		}
-	}, [])
+  console.log(`messagesLength: ${messages.length} `)
+  console.log(`messages: ${messages} `)
 
-	return (
-		<View style={styles.container}>
-			<Text style={styles.heading}>Timestamp - Dev Client</Text>
-			<Text style={styles.message}>{message}</Text>
-			<StatusBar style='auto' />
-		</View>
-	)
+  useEffect(() => {
+    const client = mqtt.connect(wshost, options) //! Connect to MQTT Broker
+
+    client.on('connect', () => {
+      setConnectStatus('Connected')
+      console.log('Connected')
+      client.subscribe('raven')
+    })
+
+    client.on('error', (err) => {
+      console.error('Connection error: ', err)
+      client.end()
+    })
+
+    client.on('reconnect', () => {
+      setConnectStatus('Reconnecting')
+    })
+
+    client.on('message', (topic, message) => {
+      console.log(`Received: ${topic}: ${message}`)
+      // setMessages((messages) => messages.concat(message.toString()))
+      setMessages(message.toString())
+      // setMessages((messages) => [...messages, message.toString()])
+    })
+
+    // return () => {
+    // 	client.end()
+    // }
+  }, [])
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.heading}>MQTT Dev Client</Text>
+      <Text style={styles.message}>{messages}</Text>
+      <Text style={styles.message}>{connectStatus}</Text>
+      {/* {messages.map((message, index) => (
+        <Text style={styles.message} key={index}>
+          {message}
+        </Text>
+      ))} */}
+      <StatusBar style="auto" />
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: 'darkorange',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	heading: {
-		fontSize: 20,
-		fontWeight: 'bold',
-		color: 'black',
-		marginBottom: 10,
-	},
-	message: {
-		fontSize: 24,
-		fontWeight: 'bold',
-		color: 'black',
-	},
+  container: {
+    flex: 1,
+    backgroundColor: 'darkorange',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'black',
+    marginBottom: 10,
+  },
+  message: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black',
+  },
 })

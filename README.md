@@ -75,3 +75,17 @@ scripts: "postinstall": "./node_modules/.bin/rn-nodeify --install --hack"
 This project has now been successfully built on the Expo EAS build service. Implication is that this could build to production which validates the code. Obviously, it needs to fleshed out to be more robust. Repo includes eas.json config file.
 
 Android sdk location: /Users/blackbird/Library/Android/sdk
+
+## Useful reference for useState() hook
+
+The Wise Guide to React useState() Hook [https://dmitripavlutin.com](https://dmitripavlutin.com/react-usestate-hook-guide/)
+
+## React import mqtt
+
+```
+npm install -g webpack                    // Install webpack globally
+npm install mqtt                          // Install MQTT library
+cd node_modules/mqtt
+npm install .                             // Install dev deps at current dir
+webpack mqtt.js --output-library mqtt     // Build
+```
