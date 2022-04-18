@@ -11,9 +11,8 @@ export default function App() {
   const [connectStatus, setConnectStatus] = useState(false)
   const [messages, setMessages] = useState([])
 
-  const wshost = 'ws://172.20.10.3:8880'
-  // const wshost = 'ws://192.168.0.120:8880'
-  const mqtthost = 'mqtt://172.0.0.1:1883'
+  const wshost = 'ws://192.168.0.120:8880'
+  const mqtthost = 'mqtt://192.168.0.120:1883'
   const clientId = 'mqtt-rn'
 
   const options = {
@@ -63,23 +62,12 @@ export default function App() {
 
     client.on('message', (topic, message) => {
       console.log(`Received: ${topic}: ${message}`)
-
-      setMessages((messages) => messages.concat(message.toString()))
-      // setMessages((messages) => {
-      //   const cache = [...messages]
-      //   cache.push(message.toString())
-      //   if (cache.length > 10) {
-      //     cache.shift()
-      //     return {
-      //       cache,
-      //     }
-      //   } else {
-      //     return { cache }
-      //   }
-      // })
+      // setMessages((messages) => messages.concat(message.toString()))
+      setMessages(message.toString())
+      // setMessages((messages) => [...messages, message.toString()])
     })
-    // return () => {
 
+    // return () => {
     // 	client.end()
     // }
   }, [])
@@ -87,14 +75,13 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>MQTT Dev Client</Text>
-      <Text style={styles.message}>{connectStatus}</Text>
       <Text style={styles.message}>{messages}</Text>
-      {/* {messages.map(({ message, index }) => {
-        ;<Text style={styles.message} key={index}>
+      <Text style={styles.message}>{connectStatus}</Text>
+      {/* {messages.map((message, index) => (
+        <Text style={styles.message} key={index}>
           {message}
         </Text>
-      })} */}
-
+      ))} */}
       <StatusBar style="auto" />
     </View>
   )
