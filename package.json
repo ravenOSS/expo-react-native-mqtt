@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "events": "^1.1.1",
-    "expo": "^46.0.16",
-    "expo-dev-client": "~0.8.4",
+    "expo": "^49.0.7",
+    "expo-dev-client": "~2.4.6",
     "expo-status-bar": "~1.2.0",
     "mqtt": "^4.3.7",
     "process": "^0.11.10",
